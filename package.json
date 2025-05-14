@@ -1,0 +1,50 @@
+{
+  "name": "deadrepos",
+  "version": "0.1.0",
+  "description": "CLI tool to find and delete old or inactive GitHub repositories",
+  "type": "module",
+  "main": "dist/bin/cli.js",
+  "bin": {
+    "deadrepos": "./dist/bin/cli.js"
+  },
+  "scripts": {
+    "type-check": "tsc -b",
+    "check-types": "turbo run check-types",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "ci": "biome ci .",
+    "prepare": "husky install",
+    "build": "tsc",
+    "start": "node dist/bin/cli.js",
+    "dev": "ts-node --esm src/bin/cli.ts"
+  },
+  "keywords": [
+    "github",
+    "repository",
+    "cleanup",
+    "cli"
+  ],
+  "author": "PauloHSOliveira",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "dotenv": "^16.5.0",
+    "inquirer": "^12.6.1",
+    "ora": "^8.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
