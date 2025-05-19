@@ -1,11 +1,19 @@
 {
   "name": "@cosmstack/repoeject",
-  "version": "0.1.0",
+  "version": "0.1.2-test-5",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
-  "type": "module",
-  "main": "dist/bin/cli.js",
+  "type": "commonjs",
+  "main": "./dist/bin/cli.js",
   "bin": {
     "repoeject": "./dist/bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
   },
   "scripts": {
     "type-check": "tsc -b",
@@ -16,11 +24,18 @@
     "check": "biome check --write .",
     "ci": "biome ci .",
     "prepare": "husky install",
-    "build": "tsc",
-    "start": "node --experimental-specifier-resolution=node dist/bin/cli.js",
-    "dev": "ts-node --esm src/bin/cli.ts"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && chmod +x dist/bin/cli.js",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/bin/cli.js",
+    "dev": "ts-node src/bin/cli.ts"
   },
-  "keywords": ["github", "repository", "cleanup", "cli"],
+  "keywords": [
+    "github",
+    "repository",
+    "cleanup",
+    "cli"
+  ],
   "license": "MIT",
   "dependencies": {
     "@octokit/rest": "^21.1.1",
@@ -35,9 +50,13 @@
     "@biomejs/biome": "^1.9.4",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
+    "@types/node": "^22.15.19",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "^8.0.0"
+    "esbuild": "^0.25.4",
+    "husky": "^8.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "config": {
     "commitizen": {
