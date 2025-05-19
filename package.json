@@ -1,6 +1,6 @@
 {
   "name": "@cosmstack/repoeject",
-  "version": "0.1.2-test-2",
+  "version": "0.1.2-test-3",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
   "type": "commonjs",
   "main": "dist/bin/cli.js",
