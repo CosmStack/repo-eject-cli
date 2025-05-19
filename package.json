@@ -1,11 +1,11 @@
 {
-  "name": "repo-eject-cli",
+  "name": "@cosmstack/repoeject",
   "version": "0.1.0",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
   "type": "module",
   "main": "dist/bin/cli.js",
   "bin": {
-    "repo-eject-cli": "./dist/bin/cli.js"
+    "repoeject": "./dist/bin/cli.js"
   },
   "scripts": {
     "type-check": "tsc -b",
@@ -21,7 +21,6 @@
     "dev": "ts-node --esm src/bin/cli.ts"
   },
   "keywords": ["github", "repository", "cleanup", "cli"],
-  "author": "PauloHSOliveira",
   "license": "MIT",
   "dependencies": {
     "@octokit/rest": "^21.1.1",
