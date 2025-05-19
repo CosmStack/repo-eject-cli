@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import dotenv from "dotenv";
 import { Command } from "commander";
 import { analyzeRepositories } from "../commands/analyze";

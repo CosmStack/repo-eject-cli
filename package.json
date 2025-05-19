@@ -1,11 +1,19 @@
 {
   "name": "@cosmstack/repoeject",
-  "version": "0.1.2-test-3",
+  "version": "0.1.2-test-4",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
   "type": "commonjs",
-  "main": "dist/bin/cli.js",
+  "main": "./dist/bin/cli.js",
   "bin": {
     "repoeject": "./dist/bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
   },
   "scripts": {
     "type-check": "tsc -b",
@@ -17,7 +25,8 @@
     "ci": "biome ci .",
     "prepare": "husky install",
     "clean": "rm -rf dist",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc && chmod +x dist/bin/cli.js",
+    "prepublishOnly": "npm run build",
     "start": "node dist/bin/cli.js",
     "dev": "ts-node src/bin/cli.ts"
   },
