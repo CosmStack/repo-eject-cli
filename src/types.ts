@@ -94,7 +94,6 @@ export interface EncryptedData {
   iv: string;
   encryptedData: string;
   authTag: string;
-  keyVersion: string;
   createdAt: number;
 }
 
