@@ -21,7 +21,7 @@ const getEncryptionAlgorithm = () => {
 export const config: Config = {
   app: {
     name: "repoeject",
-    version: "0.1.2-test-4",
+    version: "0.1.2-test-5",
   },
   github: {
     apiVersion: "2022-11-28",
