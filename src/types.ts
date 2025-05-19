@@ -2,8 +2,11 @@ export interface CliOptions {
   dryRun: boolean;
   force: boolean;
 }
-
 export interface Config {
+  app: {
+    name: string;
+    version: string;
+  };
   github: {
     apiVersion: string;
     perPage: number;
@@ -23,6 +26,20 @@ export interface Config {
   };
   cli: {
     confirmationKeyword: string;
+  };
+  authMethods: {
+    oauth: boolean;
+    token: boolean;
+  };
+  store: {
+    configDir: string;
+    configFile: string;
+    keyDir: string;
+    keyFile: string;
+  };
+  security: {
+    encryptionAlgorithm: string;
+    keyRotationInterval: number;
   };
 }
 
@@ -73,4 +90,24 @@ export interface FailedDeletion {
   repo: FormattedRepository;
   error: string;
 }
+export interface EncryptedData {
+  iv: string;
+  encryptedData: string;
+  authTag: string;
+  keyVersion: string;
+  createdAt: number;
+}
 
+export interface TokenData {
+  accessToken: string;
+  refreshToken?: string;
+  expiresAt?: number;
+  tokenType: "oauth" | "pat";
+}
+
+export interface TokenResponse {
+  access_token: string;
+  refresh_token?: string;
+  expires_in?: number;
+  token_type: string;
+}

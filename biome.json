@@ -14,12 +14,7 @@
       "**/coverage/**",
       "**/generated/**"
     ],
-    "include": [
-      "**/*.ts",
-      "**/*.js",
-      "**/*.json",
-      "**/*.cjs"
-    ]
+    "include": ["**/*.ts", "**/*.js", "**/*.json", "**/*.cjs"]
   },
   "formatter": {
     "enabled": true,

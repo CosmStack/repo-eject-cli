@@ -1,11 +1,11 @@
 {
-  "name": "deadrepos",
+  "name": "repo-eject-cli",
   "version": "0.1.0",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
   "type": "module",
   "main": "dist/bin/cli.js",
   "bin": {
-    "deadrepos": "./dist/bin/cli.js"
+    "repo-eject-cli": "./dist/bin/cli.js"
   },
   "scripts": {
     "type-check": "tsc -b",
@@ -17,15 +17,10 @@
     "ci": "biome ci .",
     "prepare": "husky install",
     "build": "tsc",
-    "start": "node dist/bin/cli.js",
+    "start": "node --experimental-specifier-resolution=node dist/bin/cli.js",
     "dev": "ts-node --esm src/bin/cli.ts"
   },
-  "keywords": [
-    "github",
-    "repository",
-    "cleanup",
-    "cli"
-  ],
+  "keywords": ["github", "repository", "cleanup", "cli"],
   "author": "PauloHSOliveira",
   "license": "MIT",
   "dependencies": {

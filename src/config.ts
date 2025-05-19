@@ -1,29 +1,64 @@
-import type { Config } from './types.js';
+import type { Config } from "./types";
+import path from "node:path";
+import os from "node:os";
+
+const calculateKeyRotationInterval = (keyRotationInterval: number) => {
+  return keyRotationInterval * 24 * 60 * 60 * 1000;
+};
+
+const getKeyRotationInterval = () => {
+  const keyRotationInterval = process.env.KEY_ROTATION_INTERVAL;
+  if (!keyRotationInterval) return calculateKeyRotationInterval(30);
+  return calculateKeyRotationInterval(Number(keyRotationInterval));
+};
+
+const getEncryptionAlgorithm = () => {
+  const encryptionAlgorithm = process.env.ENCRYPTION_ALGORITHM;
+  if (!encryptionAlgorithm) return "aes-256-gcm";
+  return encryptionAlgorithm;
+};
 
 export const config: Config = {
-  // GitHub API configuration
-  github: {
-    apiVersion: '2022-11-28',
-    perPage: 100, // Number of repos to fetch per page
-    maxPages: 10,  // Maximum number of pages to fetch (limit to 1000 repos)
+  app: {
+    name: "repoeject",
+    version: "0.1.0",
   },
-  
-  // UI configuration
-  ui: {
-    spinnerColor: 'yellow',
-    tableColors: {
-      header: 'cyan',
-      row: 'white',
-      selected: 'green',
-      inactive: 'gray',
-      danger: 'red',
-    },
-    inactiveThresholdDays: 180, // 6 months
-    lowCommitThreshold: 3,      // Highlight repos with <= 3 commits
+  github: {
+    apiVersion: "2022-11-28",
+    perPage: 100,
+    maxPages: 10,
   },
 
-  // CLI configuration
+  ui: {
+    spinnerColor: "yellow",
+    tableColors: {
+      header: "cyan",
+      row: "white",
+      selected: "green",
+      inactive: "gray",
+      danger: "red",
+    },
+    inactiveThresholdDays: 180,
+    lowCommitThreshold: 3,
+  },
+
   cli: {
-    confirmationKeyword: 'DELETE',
+    confirmationKeyword: "DELETE",
+  },
+
+  authMethods: {
+    oauth: false,
+    token: true,
+  },
+
+  store: {
+    configDir: path.join(os.homedir(), ".repoeject"),
+    configFile: path.join(os.homedir(), ".repoeject", "config.json"),
+    keyDir: path.join(os.homedir(), ".repoeject", "keys"),
+    keyFile: path.join(os.homedir(), ".repoeject", "keys", "master.key"),
+  },
+  security: {
+    encryptionAlgorithm: getEncryptionAlgorithm(),
+    keyRotationInterval: getKeyRotationInterval(),
   },
 };
