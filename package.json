@@ -1,11 +1,11 @@
 {
-  "name": "vacuum-cli",
+  "name": "repo-eject-cli",
   "version": "0.1.0",
   "description": "CLI tool to find and delete old or inactive GitHub repositories",
   "type": "module",
   "main": "dist/bin/cli.js",
   "bin": {
-    "vacuum-cll": "./dist/bin/cli.js"
+    "repo-eject-cli": "./dist/bin/cli.js"
   },
   "scripts": {
     "type-check": "tsc -b",
