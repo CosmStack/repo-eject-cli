@@ -7,7 +7,6 @@ import type { CipherGCM, DecipherGCM } from "node:crypto";
 const KEY_DIR = config.store.keyDir;
 const MASTER_KEY_FILE = config.store.keyFile;
 const ENCRYPTION_ALGORITHM = config.security.encryptionAlgorithm;
-const KEY_ROTATION_INTERVAL = config.security.keyRotationInterval;
 
 function generateKey(): Buffer {
   return crypto.randomBytes(32);
@@ -19,44 +18,20 @@ function ensureKeyDir(): void {
   }
 }
 
-function generateMasterKey(): Buffer {
-  ensureKeyDir();
-  const masterKey = generateKey();
-  fs.writeFileSync(MASTER_KEY_FILE, masterKey, { mode: 0o600 });
-  return masterKey;
-}
-
 function getMasterKey(): Buffer {
   ensureKeyDir();
 
   try {
     if (fs.existsSync(MASTER_KEY_FILE)) {
-      const keyData = fs.readFileSync(MASTER_KEY_FILE);
-      const keyInfo = JSON.parse(keyData.toString());
-
-      if (Date.now() - keyInfo.createdAt > KEY_ROTATION_INTERVAL) {
-        return rotateMasterKey(keyInfo.key);
-      }
-
-      return Buffer.from(keyInfo.key, "base64");
+      return fs.readFileSync(MASTER_KEY_FILE);
     }
   } catch (error) {
-    console.warn("Failed to read master key:", error);
+    console.warn("Failed to read master key, generating new one");
   }
 
-  return generateMasterKey();
-}
-
-function rotateMasterKey(oldKey: Buffer): Buffer {
-  const newKey = generateKey();
-  const keyInfo = {
-    key: newKey.toString("base64"),
-    createdAt: Date.now(),
-    previousKey: oldKey.toString("base64"),
-  };
-
-  fs.writeFileSync(MASTER_KEY_FILE, JSON.stringify(keyInfo), { mode: 0o600 });
-  return newKey;
+  const masterKey = generateKey();
+  fs.writeFileSync(MASTER_KEY_FILE, masterKey, { mode: 0o600 });
+  return masterKey;
 }
 
 export function encrypt(data: TokenData): EncryptedData {
@@ -77,7 +52,6 @@ export function encrypt(data: TokenData): EncryptedData {
     iv: iv.toString("base64"),
     encryptedData: encrypted.toString("base64"),
     authTag: cipher.getAuthTag().toString("base64"),
-    keyVersion: masterKey.toString("base64").slice(0, 8),
     createdAt: Date.now(),
   };
 }
@@ -92,12 +66,16 @@ export function decrypt(encryptedData: EncryptedData): TokenData {
 
   decipher.setAuthTag(Buffer.from(encryptedData.authTag, "base64"));
 
-  const decrypted = Buffer.concat([
-    decipher.update(Buffer.from(encryptedData.encryptedData, "base64")),
-    decipher.final(),
-  ]);
+  try {
+    const decrypted = Buffer.concat([
+      decipher.update(Buffer.from(encryptedData.encryptedData, "base64")),
+      decipher.final(),
+    ]);
 
-  return JSON.parse(decrypted.toString("utf8"));
+    return JSON.parse(decrypted.toString("utf8"));
+  } catch (error) {
+    throw new Error("Failed to decrypt token. Please authenticate again.");
+  }
 }
 
 export function isTokenExpired(tokenData: TokenData): boolean {

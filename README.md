@@ -103,8 +103,8 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/). 
 # Stage your changes
 git add .
 
-# Commit using commitizen
-npm run commit
+# Create your commit
+npx cz
 ```
 
 ## License
